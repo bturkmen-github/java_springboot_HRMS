@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import bt.hrms.business.abstracts.JobPositionService;
 import bt.hrms.core.utilities.results.DataResult;
+import bt.hrms.core.utilities.results.ErrorResult;
 import bt.hrms.core.utilities.results.Result;
 import bt.hrms.core.utilities.results.SuccessDataResult;
 import bt.hrms.core.utilities.results.SuccessResult;
@@ -20,7 +21,6 @@ public class JobPositionManager implements JobPositionService {
 	
 	@Autowired
 	public JobPositionManager(JobPositionDao jobPositionDao) {
-		super();
 		this.jobPositionDao = jobPositionDao;
 	}
 	
@@ -36,8 +36,17 @@ public class JobPositionManager implements JobPositionService {
 
 	@Override
 	public Result add(JobPosition jobPosition) {
-		this.jobPositionDao.save(jobPosition);
-		return new SuccessResult("Pozisyon Eklendi");
+		
+		List<JobPosition> jobPositionListByName = this.jobPositionDao.getByPositionName(jobPosition.getPositionName());
+		
+		if(jobPositionListByName.size()==0) {
+			this.jobPositionDao.save(jobPosition);
+			return new SuccessResult("Pozisyon Eklendi");
+		}else {
+			return new ErrorResult("Bu Pozisyon Daha Önce Eklendi.");
+		}
+		
+		
 	}
 
 }

@@ -1,12 +1,12 @@
 package bt.hrms.entities.concretes;
 
-import java.sql.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -17,24 +17,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="job_positions")
-public class JobPosition {
-	
+@Table(name="users")
+@Inheritance(strategy = InheritanceType.JOINED)
+public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
 	private int id;
 	
-	@Column(name="position_name")
-	private String positionName;
+	@Column(name="email")
+	private String email;
 	
-	@Column(name="created_date")
-	private Date createdDate;
-	
-	@Column(name="is_deleted")
-	private boolean isDeleted;
-	
-	@Column(name="is_active")
-	private boolean isActive;
-	
+	@Column(name="password")
+	private String password;
 }
